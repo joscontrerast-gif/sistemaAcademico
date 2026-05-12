@@ -4,4 +4,8 @@ Version 0.1:
 -Microservicio Ususario configurado y con CRUD funcionando localmente. Falta implementar lo mismo en el microservicio Academico.
 
 
+PASOS QUE FALTAN:
 
+-CONFIGURAR MICROSERVICIO ACADEMICOS
+-CONFIGURAR EL RESTO DE MICROSERVICIOS POR SI SOLOS
+-CONTECTAR LOS MICROSERVICIOS ENTRE SI Y CRUD FUNCIONA
