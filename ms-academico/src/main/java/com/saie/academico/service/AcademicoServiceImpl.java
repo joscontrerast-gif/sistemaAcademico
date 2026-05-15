@@ -1,11 +1,13 @@
 package com.saie.academico.service;
 
+import com.saie.academico.client.UsuarioClient;
 import com.saie.academico.dto.AcademicoRequestDTO;
 import com.saie.academico.dto.AcademicoResponseDTO;
 import com.saie.academico.exception.ResourceNotFoundException;
 import com.saie.academico.model.Academico;
 import com.saie.academico.repository.AcademicoRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +17,8 @@ import java.util.List;
 public class AcademicoServiceImpl implements AcademicoService {
 
     private final AcademicoRepository repository;
+    @Autowired
+    private UsuarioClient usuarioClient;
 
     @Override
     public List<AcademicoResponseDTO> listar() {

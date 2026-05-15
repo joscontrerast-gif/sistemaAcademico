@@ -1,6 +1,7 @@
 package com.saie.matricula.service;
 
 import com.saie.matricula.client.UsuarioClient;
+import com.saie.matricula.client.CursoClient;
 import com.saie.matricula.dto.MatriculaDTO;
 import com.saie.matricula.dto.MatriculaRequestDTO;
 import com.saie.matricula.exception.ResourceNotFoundException;
@@ -22,6 +23,9 @@ public class MatriculaServiceImpl
 
     @Autowired
     private UsuarioClient usuarioClient;
+
+    @Autowired
+    private CursoClient cursoClient;
 
     @Override
     public List<MatriculaDTO> listar() {
@@ -48,6 +52,14 @@ public class MatriculaServiceImpl
     public MatriculaDTO guardar(
             MatriculaRequestDTO dto) {
 
+        // VALIDAR ESTUDIANTE
+        usuarioClient.obtenerUsuario(
+                dto.getEstudianteId());
+
+        // VALIDAR CURSO
+        cursoClient.obtenerCurso(
+                dto.getCursoId());
+
         Matricula matricula =
                 new Matricula();
 
@@ -63,8 +75,10 @@ public class MatriculaServiceImpl
         matricula.setFechaMatricula(
                 LocalDate.now());
 
-        return convertirDTO(
-                repository.save(matricula));
+        Matricula guardada =
+                repository.save(matricula);
+
+        return convertirDTO(guardada);
     }
 
     @Override
@@ -78,6 +92,14 @@ public class MatriculaServiceImpl
                                 new ResourceNotFoundException(
                                         "Matrícula no encontrada"));
 
+        // VALIDAR ESTUDIANTE
+        usuarioClient.obtenerUsuario(
+                dto.getEstudianteId());
+
+        // VALIDAR CURSO
+        cursoClient.obtenerCurso(
+                dto.getCursoId());
+
         matricula.setEstudianteId(
                 dto.getEstudianteId());
 
@@ -87,8 +109,10 @@ public class MatriculaServiceImpl
         matricula.setEstado(
                 dto.getEstado());
 
-        return convertirDTO(
-                repository.save(matricula));
+        Matricula actualizada =
+                repository.save(matricula);
+
+        return convertirDTO(actualizada);
     }
 
     @Override
