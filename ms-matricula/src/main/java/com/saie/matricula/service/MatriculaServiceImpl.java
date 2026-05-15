@@ -1,5 +1,6 @@
 package com.saie.matricula.service;
 
+import com.saie.matricula.client.UsuarioClient;
 import com.saie.matricula.dto.MatriculaDTO;
 import com.saie.matricula.dto.MatriculaRequestDTO;
 import com.saie.matricula.exception.ResourceNotFoundException;
@@ -18,6 +19,9 @@ public class MatriculaServiceImpl
 
     @Autowired
     private MatriculaRepository repository;
+
+    @Autowired
+    private UsuarioClient usuarioClient;
 
     @Override
     public List<MatriculaDTO> listar() {
@@ -105,7 +109,8 @@ public class MatriculaServiceImpl
         MatriculaDTO dto =
                 new MatriculaDTO();
 
-        dto.setId(matricula.getId());
+        dto.setId(
+                matricula.getId());
 
         dto.setEstudianteId(
                 matricula.getEstudianteId());

@@ -7,6 +7,7 @@ import com.saie.asistencia.model.Asistencia;
 import com.saie.asistencia.repository.AsistenciaRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import com.saie.asistencia.client.UsuarioClient;
 
 import java.util.List;
 
@@ -15,6 +16,7 @@ import java.util.List;
 public class AsistenciaServiceImpl implements AsistenciaService {
 
     private final AsistenciaRepository repository;
+    private final UsuarioClient usuarioClient;
 
     @Override
     public List<AsistenciaResponseDTO> listar() {

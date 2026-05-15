@@ -1,5 +1,6 @@
 package com.saie.evaluacion.service;
 
+import com.saie.evaluacion.client.UsuarioClient;
 import com.saie.evaluacion.dto.EvaluacionDTO;
 import com.saie.evaluacion.dto.EvaluacionRequestDTO;
 import com.saie.evaluacion.exception.ResourceNotFoundException;
@@ -17,6 +18,9 @@ public class EvaluacionServiceImpl
 
     @Autowired
     private EvaluacionRepository repository;
+
+    @Autowired
+    private UsuarioClient usuarioClient;
 
     @Override
     public List<EvaluacionDTO> listar() {
