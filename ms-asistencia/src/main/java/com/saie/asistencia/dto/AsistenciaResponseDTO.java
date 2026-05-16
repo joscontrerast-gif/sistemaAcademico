@@ -1,5 +1,7 @@
 package com.saie.asistencia.dto;
 
+import com.saie.asistencia.dto.external.AcademicoDTO;
+import com.saie.asistencia.dto.external.UsuarioDTO;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,6 +15,10 @@ public class AsistenciaResponseDTO {
 
     private Long id;
 
+    private Long academicoId;
+
+    private Long usuarioId;
+
     private String estudiante;
 
     private String asignatura;
@@ -20,4 +26,8 @@ public class AsistenciaResponseDTO {
     private String fecha;
 
     private Boolean presente;
+
+    private UsuarioDTO usuario;
+
+    private AcademicoDTO academico;
 }

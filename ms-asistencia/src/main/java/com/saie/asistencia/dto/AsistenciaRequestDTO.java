@@ -5,6 +5,10 @@ import lombok.Data;
 @Data
 public class AsistenciaRequestDTO {
 
+    private Long usuarioId;
+
+    private Long academicoId;
+
     private String estudiante;
 
     private String asignatura;

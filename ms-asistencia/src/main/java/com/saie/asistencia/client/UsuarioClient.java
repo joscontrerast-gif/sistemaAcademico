@@ -1,5 +1,6 @@
 package com.saie.asistencia.client;
 
+import com.saie.asistencia.dto.external.UsuarioDTO;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -8,5 +9,5 @@ import org.springframework.web.bind.annotation.PathVariable;
 public interface UsuarioClient {
 
     @GetMapping("/api/usuarios/{id}")
-    String obtenerUsuario(@PathVariable Long id);
+    UsuarioDTO obtenerUsuario(@PathVariable Long id);
 }

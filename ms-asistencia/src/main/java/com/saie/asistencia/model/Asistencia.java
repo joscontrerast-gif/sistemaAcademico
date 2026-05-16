@@ -22,6 +22,10 @@ public class Asistencia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    private Long usuarioId;
+
+    private Long academicoId;
+
     private String estudiante;
 
     private String asignatura;
