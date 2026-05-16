@@ -1,6 +1,6 @@
 package com.saie.evaluacion.client;
 
-import com.saie.evaluacion.dto.external.CursoDTO;
+import com.saie.evaluacion.dto.external.AcademicoDTO;
 
 import org.springframework.cloud.openfeign.FeignClient;
 
@@ -11,9 +11,9 @@ import org.springframework.web.bind.annotation.PathVariable;
         name = "ms-academico",
         url = "http://localhost:8082"
 )
-public interface CursoClient {
+public interface AcademicoClient {
 
-    @GetMapping("/api/cursos/{id}")
-    CursoDTO obtenerCurso(
+    @GetMapping("/api/academicos/{id}")
+    AcademicoDTO obtenerAcademico(
             @PathVariable Long id);
 }

@@ -1,27 +1,28 @@
 package com.saie.academico.service;
 
-import com.saie.academico.client.UsuarioClient;
+import com.saie.academico.dto.AcademicoDTO;
 import com.saie.academico.dto.AcademicoRequestDTO;
+
 import com.saie.academico.dto.AcademicoResponseDTO;
-import com.saie.academico.exception.ResourceNotFoundException;
 import com.saie.academico.model.Academico;
+
 import com.saie.academico.repository.AcademicoRepository;
-import lombok.RequiredArgsConstructor;
+
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
 @Service
-@RequiredArgsConstructor
-public class AcademicoServiceImpl implements AcademicoService {
+public class AcademicoServiceImpl
+        implements AcademicoService {
 
-    private final AcademicoRepository repository;
     @Autowired
-    private UsuarioClient usuarioClient;
+    private AcademicoRepository repository;
 
     @Override
-    public List<AcademicoResponseDTO> listar() {
+    public List<AcademicoDTO> listar() {
 
         return repository.findAll()
                 .stream()
@@ -30,61 +31,103 @@ public class AcademicoServiceImpl implements AcademicoService {
     }
 
     @Override
-    public AcademicoResponseDTO buscarPorId(Long id) {
+    public AcademicoDTO obtener(Long id) {
 
-        Academico academico = repository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Registro no encontrado"));
+        Academico academico =
+                repository.findById(id)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Académico no encontrado"));
 
         return convertirDTO(academico);
     }
 
     @Override
-    public AcademicoResponseDTO guardar(AcademicoRequestDTO dto) {
+    public AcademicoDTO guardar(
+            AcademicoRequestDTO dto) {
 
-        Academico academico = new Academico();
+        Academico academico =
+                new Academico();
 
-        academico.setNombre(dto.getNombre());
-        academico.setCarrera(dto.getCarrera());
-        academico.setAsignatura(dto.getAsignatura());
-        academico.setPromedio(dto.getPromedio());
+        academico.setNombre(
+                dto.getNombre());
 
-        return convertirDTO(repository.save(academico));
+        academico.setCarrera(
+                dto.getCarrera());
+
+        academico.setAsignatura(
+                dto.getAsignatura());
+
+        academico.setPromedio(
+                dto.getPromedio());
+
+        Academico guardado =
+                repository.save(academico);
+
+        return convertirDTO(guardado);
     }
 
     @Override
-    public AcademicoResponseDTO actualizar(Long id, AcademicoRequestDTO dto) {
+    public AcademicoDTO actualizar(
+            Long id,
+            AcademicoRequestDTO dto) {
 
-        Academico academico = repository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Registro no encontrado"));
+        Academico academico =
+                repository.findById(id)
+                        .orElseThrow(() ->
+                                new RuntimeException(
+                                        "Académico no encontrado"));
 
-        academico.setNombre(dto.getNombre());
-        academico.setCarrera(dto.getCarrera());
-        academico.setAsignatura(dto.getAsignatura());
-        academico.setPromedio(dto.getPromedio());
+        academico.setNombre(
+                dto.getNombre());
 
-        return convertirDTO(repository.save(academico));
+        academico.setCarrera(
+                dto.getCarrera());
+
+        academico.setAsignatura(
+                dto.getAsignatura());
+
+        academico.setPromedio(
+                dto.getPromedio());
+
+        Academico actualizado =
+                repository.save(academico);
+
+        return convertirDTO(actualizado);
     }
 
     @Override
     public void eliminar(Long id) {
 
-        Academico academico = repository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Registro no encontrado"));
-
-        repository.delete(academico);
+        repository.deleteById(id);
     }
 
-    private AcademicoResponseDTO convertirDTO(Academico academico) {
+    @Override
+    public AcademicoResponseDTO buscarPorId(Long id) {
+        return null;
+    }
 
-        return new AcademicoResponseDTO(
-                academico.getId(),
-                academico.getNombre(),
-                academico.getCarrera(),
-                academico.getAsignatura(),
-                academico.getPromedio()
-        );
+    private AcademicoDTO convertirDTO(
+            Academico academico) {
+
+        AcademicoDTO dto =
+                new AcademicoDTO();
+
+        dto.setId(
+                academico.getId());
+
+        dto.setNombre(
+                academico.getNombre());
+
+        dto.setCarrera(
+                academico.getCarrera());
+
+        dto.setAsignatura(
+                academico.getAsignatura());
+
+        dto.setPromedio(
+                academico.getPromedio());
+
+        return dto;
     }
 }

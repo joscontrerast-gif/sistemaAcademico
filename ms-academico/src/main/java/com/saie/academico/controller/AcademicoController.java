@@ -1,47 +1,66 @@
 package com.saie.academico.controller;
 
+import com.saie.academico.dto.AcademicoDTO;
 import com.saie.academico.dto.AcademicoRequestDTO;
-import com.saie.academico.dto.AcademicoResponseDTO;
+
 import com.saie.academico.service.AcademicoService;
-import lombok.RequiredArgsConstructor;
+
+import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
 @RestController
 @RequestMapping("/api/academicos")
-@RequiredArgsConstructor
 public class AcademicoController {
 
-    private final AcademicoService service;
+    @Autowired
+    private AcademicoService service;
 
     @GetMapping
-    public List<AcademicoResponseDTO> listar() {
-        return service.listar();
+    public ResponseEntity<List<AcademicoDTO>> listar() {
+
+        return ResponseEntity.ok(
+                service.listar());
     }
 
     @GetMapping("/{id}")
-    public AcademicoResponseDTO buscar(@PathVariable Long id) {
-        return service.buscarPorId(id);
+    public ResponseEntity<AcademicoDTO> obtener(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(
+                service.obtener(id));
     }
 
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public AcademicoResponseDTO guardar(@RequestBody AcademicoRequestDTO dto) {
-        return service.guardar(dto);
+    public ResponseEntity<AcademicoDTO> guardar(
+            @RequestBody AcademicoRequestDTO dto) {
+
+        return ResponseEntity.status(
+                        HttpStatus.CREATED)
+                .body(service.guardar(dto));
     }
 
     @PutMapping("/{id}")
-    public AcademicoResponseDTO actualizar(@PathVariable Long id,
-                                           @RequestBody AcademicoRequestDTO dto) {
+    public ResponseEntity<AcademicoDTO> actualizar(
+            @PathVariable Long id,
+            @RequestBody AcademicoRequestDTO dto) {
 
-        return service.actualizar(id, dto);
+        return ResponseEntity.ok(
+                service.actualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void eliminar(@PathVariable Long id) {
+    public ResponseEntity<Void> eliminar(
+            @PathVariable Long id) {
+
         service.eliminar(id);
+
+        return ResponseEntity.noContent()
+                .build();
     }
 }

@@ -1,13 +1,19 @@
 package com.saie.evaluacion.service;
 
+import com.saie.evaluacion.client.AcademicoClient;
 import com.saie.evaluacion.client.UsuarioClient;
+
 import com.saie.evaluacion.dto.EvaluacionDTO;
 import com.saie.evaluacion.dto.EvaluacionRequestDTO;
+
 import com.saie.evaluacion.exception.ResourceNotFoundException;
+
 import com.saie.evaluacion.model.Evaluacion;
+
 import com.saie.evaluacion.repository.EvaluacionRepository;
 
 import org.springframework.beans.factory.annotation.Autowired;
+
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,6 +27,9 @@ public class EvaluacionServiceImpl
 
     @Autowired
     private UsuarioClient usuarioClient;
+
+    @Autowired
+    private AcademicoClient academicoClient;
 
     @Override
     public List<EvaluacionDTO> listar() {
@@ -47,17 +56,25 @@ public class EvaluacionServiceImpl
     public EvaluacionDTO guardar(
             EvaluacionRequestDTO dto) {
 
+        // VALIDAR PROFESOR
+        usuarioClient.obtenerUsuario(
+                dto.getProfesorId());
+
+        // VALIDAR ACADÉMICO
+        academicoClient.obtenerAcademico(
+                dto.getCursoId());
+
         Evaluacion evaluacion =
                 new Evaluacion();
 
         evaluacion.setNombre(
                 dto.getNombre());
 
+        evaluacion.setProfesorId(
+                dto.getProfesorId());
+
         evaluacion.setCursoId(
                 dto.getCursoId());
-
-        evaluacion.setFecha(
-                dto.getFecha());
 
         evaluacion.setPonderacion(
                 dto.getPonderacion());
@@ -79,14 +96,22 @@ public class EvaluacionServiceImpl
                                 new ResourceNotFoundException(
                                         "Evaluación no encontrada"));
 
+        // VALIDAR PROFESOR
+        usuarioClient.obtenerUsuario(
+                dto.getProfesorId());
+
+        // VALIDAR ACADÉMICO
+        academicoClient.obtenerAcademico(
+                dto.getCursoId());
+
         evaluacion.setNombre(
                 dto.getNombre());
 
+        evaluacion.setProfesorId(
+                dto.getProfesorId());
+
         evaluacion.setCursoId(
                 dto.getCursoId());
-
-        evaluacion.setFecha(
-                dto.getFecha());
 
         evaluacion.setPonderacion(
                 dto.getPonderacion());
@@ -122,10 +147,10 @@ public class EvaluacionServiceImpl
                 evaluacion.getNombre());
 
         dto.setCursoId(
-                evaluacion.getCursoId());
+                evaluacion.getProfesorId());
 
-        dto.setFecha(
-                evaluacion.getFecha());
+        dto.setCursoId(
+                evaluacion.getCursoId());
 
         dto.setPonderacion(
                 evaluacion.getPonderacion());

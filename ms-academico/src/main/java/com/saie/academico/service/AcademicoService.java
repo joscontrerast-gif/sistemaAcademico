@@ -1,5 +1,6 @@
 package com.saie.academico.service;
 
+import com.saie.academico.dto.AcademicoDTO;
 import com.saie.academico.dto.AcademicoRequestDTO;
 import com.saie.academico.dto.AcademicoResponseDTO;
 
@@ -7,13 +8,18 @@ import java.util.List;
 
 public interface AcademicoService {
 
-    List<AcademicoResponseDTO> listar();
+    List<AcademicoDTO> listar();
 
-    AcademicoResponseDTO buscarPorId(Long id);
+    AcademicoDTO obtener(Long id);
 
-    AcademicoResponseDTO guardar(AcademicoRequestDTO dto);
+    AcademicoDTO guardar(
+            AcademicoRequestDTO dto);
 
-    AcademicoResponseDTO actualizar(Long id, AcademicoRequestDTO dto);
+    AcademicoDTO actualizar(
+            Long id,
+            AcademicoRequestDTO dto);
 
     void eliminar(Long id);
+
+    AcademicoResponseDTO buscarPorId(Long id);
 }

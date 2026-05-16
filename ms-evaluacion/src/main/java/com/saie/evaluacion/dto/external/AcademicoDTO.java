@@ -1,0 +1,17 @@
+package com.saie.evaluacion.dto.external;
+
+import lombok.Data;
+
+@Data
+public class AcademicoDTO {
+
+    private Long id;
+
+    private String nombre;
+
+    private String carrera;
+
+    private String asignatura;
+
+    private Double promedio;
+}

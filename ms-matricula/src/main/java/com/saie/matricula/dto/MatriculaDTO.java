@@ -14,19 +14,43 @@ public class MatriculaDTO {
 
     private String estado;
 
-
-    public void setEstudianteId(Object estudianteId) {
+    public Long getId() {
+        return id;
     }
 
-    public void setCursoId(Object cursoId) {
+    public void setId(Long id) {
+        this.id = id;
     }
 
-    public void setFechaMatricula(Object fechaMatricula) {
+    public Long getEstudianteId() {
+        return estudianteId;
     }
 
-    public void setEstado(Object estado) {
+    public void setEstudianteId(Long estudianteId) {
+        this.estudianteId = estudianteId;
     }
 
-    public void setId(Object id) {
+    public Long getCursoId() {
+        return cursoId;
+    }
+
+    public void setCursoId(Long cursoId) {
+        this.cursoId = cursoId;
+    }
+
+    public LocalDate getFechaMatricula() {
+        return fechaMatricula;
+    }
+
+    public void setFechaMatricula(LocalDate fechaMatricula) {
+        this.fechaMatricula = fechaMatricula;
+    }
+
+    public String getEstado() {
+        return estado;
+    }
+
+    public void setEstado(String estado) {
+        this.estado = estado;
     }
 }
