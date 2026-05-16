@@ -10,3 +10,17 @@ CREATE DATABASE evaluaciones_db;
 CREATE DATABASE matriculas_db;
 CREATE DATABASE asistencia_db;
 CREATE DATABASE academico_db;
+
+FLOW DE DATOS:
+
+        USUARIOS ─────────┐
+                          │
+                          ▼
+                    MATRICULA
+                          │
+                          ▼
+                     ACADEMICO (CURSO/PROFESOR)
+                          │
+          ┌───────────────┼───────────────┐
+          ▼               ▼               ▼
+     EVALUACION     ASISTENCIA      OTROS MS
