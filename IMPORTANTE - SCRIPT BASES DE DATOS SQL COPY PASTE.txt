@@ -1,0 +1,37 @@
+	INSTRUCCIONES PARA DEMOSTRACIOHN
+1.-CREAR BASES DE DATOS EN LARAGON
+CREATE DATABASE usuarios_db;
+CREATE DATABASE academico_db;
+CREATE DATABASE matricula_db;
+CREATE DATABASE evaluacion_db;
+CREATE DATABASE asistencia_db;
+
+
+2.-ABRIR MICROSERVICIOS EN ORDEN
+#ORDEN DE ENCENDIDO MICROSERVICIOS
+1. ms-usuarios
+2. ms-academico
+3. ms-matricula
+4. ms-evaluacion
+5. ms-asistencia
+
+3.-EJEMPLOS PARA CORRER
+
+
+
+
+
+#RELACIONES EJEMPLOS
+
+Ahora todo queda conectado así:
+
+👤 Usuario 3 (profesor Carlos)
+dicta evaluaciones
+📚 Curso 1 (Backend Java)
+-tiene matrícula
+-tiene evaluaciones
+-tiene asistencia
+🧾 Estudiante 1
+-matriculado en curso 1 y 8
+-aparece en asistencia
+-participa en sistema completo
