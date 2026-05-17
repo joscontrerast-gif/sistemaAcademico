@@ -22,7 +22,7 @@ FLOW DE DATOS:
 
 S.A.I.E es un sistema académico desarrollado con arquitectura de microservicios. Su función principal es administrar estudiantes, matrículas, evaluaciones, cursos y asistencias dentro de una institución educativa.
 
-El sistema fue desarrollado utilizando Java Spring Boot, MySQL, Maven y OpenFeign para la comunicación entre microservicios.
+El sistema fue desarrollado utilizando Java Spring Boot, MySQL, Maven,OpenFeign para la comunicación entre microservicios y Flyway en conjunto a scripts de sql para la creacion y llenado de las bases de datos.
 
 ---
 
