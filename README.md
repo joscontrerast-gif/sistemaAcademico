@@ -43,13 +43,13 @@ EVALUACIÓN / ASISTENCIA
 
 # Microservicios
 
-| Microservicio | Función |
+| Microservicio | Función | Puerto
 |---|---|
-| ms-usuarios | Gestión de usuarios y estudiantes |
-| ms-matricula | Registro de matrículas |
-| ms-academico | Gestión académica y cursos |
-| ms-evaluacion | Evaluaciones y notas |
-| ms-asistencia | Control de asistencia |
+| ms-usuarios | Gestión de usuarios y estudiantes | 8081
+| ms-matricula | Registro de matrículas | 8083
+| ms-academico | Gestión académica y cursos | 8082
+| ms-evaluacion | Evaluaciones y notas | 8084
+| ms-asistencia | Control de asistencia | 8085
 
 ---
 
