@@ -15,3 +15,243 @@ FLOW DE DATOS:
           ┌───────────────┼───────────────┐
           ▼               ▼               ▼
      EVALUACION     ASISTENCIA      OTROS MS
+
+ SISTEMA ACADÉMICO INTEGRADO ESTUDIANTIL (S.A.I.E)
+
+ Descripción
+
+S.A.I.E es un sistema académico desarrollado con arquitectura de microservicios. Su función principal es administrar estudiantes, matrículas, evaluaciones, cursos y asistencias dentro de una institución educativa.
+
+El sistema fue desarrollado utilizando Java Spring Boot, MySQL, Maven y OpenFeign para la comunicación entre microservicios.
+
+---
+
+# Arquitectura General
+
+## Flujo del Sistema
+
+```text
+USUARIOS
+   ↓
+MATRÍCULA
+   ↓
+ACADÉMICO
+   ↓
+EVALUACIÓN / ASISTENCIA
+```
+
+
+# Microservicios
+
+| Microservicio | Función |
+|---|---|
+| ms-usuarios | Gestión de usuarios y estudiantes |
+| ms-matricula | Registro de matrículas |
+| ms-academico | Gestión académica y cursos |
+| ms-evaluacion | Evaluaciones y notas |
+| ms-asistencia | Control de asistencia |
+
+---
+
+# Base de Datos y Entidades
+
+## ms-usuarios
+
+### Tabla: usuarios
+
+Guarda la información principal de los usuarios del sistema.
+
+### Campos
+
+| Campo | Tipo |
+|---|---|
+| id | Long |
+| nombre | String |
+| correo | String |
+| rol | String |
+
+### Función
+
+Este microservicio administra estudiantes y usuarios que luego son utilizados por los demás microservicios.
+
+---
+
+## ms-matricula
+
+### Tabla: matriculas
+
+Registra las matrículas de estudiantes en cursos.
+
+### Campos
+
+| Campo | Tipo |
+|---|---|
+| id | Long |
+| estudianteId | Long |
+| cursoId | Long |
+| fechaMatricula | LocalDate |
+| estado | String |
+
+### Función
+
+Permite registrar estudiantes en cursos y mantener control del estado de matrícula.
+
+---
+
+## ms-academico
+
+### Tabla: academicos
+
+Contiene la información académica relacionada con cursos y asignaturas.
+
+### Campos
+
+| Campo | Tipo |
+|---|---|
+| id | Long |
+| nombre | String |
+| carrera | String |
+| asignatura | String |
+| promedio | Double |
+
+### Función
+
+Centraliza información académica utilizada por evaluaciones y asistencia.
+
+---
+
+## ms-evaluacion
+
+### Tabla: evaluaciones
+
+Guarda las evaluaciones realizadas dentro del sistema.
+
+### Campos
+
+| Campo | Tipo |
+|---|---|
+| id | Long |
+| nombre | String |
+| profesorId | Long |
+| cursoId | Long |
+| fecha | LocalDate |
+| ponderacion | Double |
+
+### Tabla: calificaciones
+
+Registra las notas obtenidas por los estudiantes.
+
+### Campos
+
+| Campo | Tipo |
+|---|---|
+| id | Long |
+| evaluacionId | Long |
+| estudianteId | Long |
+| nota | Double |
+| observacion | String |
+
+### Función
+
+Permite administrar evaluaciones, notas y observaciones académicas.
+
+---
+
+## ms-asistencia
+
+### Tabla: asistencias
+
+Registra la asistencia de estudiantes a clases.
+
+### Campos
+
+| Campo | Tipo |
+|---|---|
+| id | Long |
+| usuarioId | Long |
+| academicoId | Long |
+| estudiante | String |
+| asignatura | String |
+| fecha | String |
+| presente | Boolean |
+
+### Función
+
+Controla la asistencia e inasistencia de estudiantes en asignaturas.
+
+---
+
+# Relación Entre Microservicios
+
+```text
+USUARIO
+   │
+   └── MATRÍCULA
+           │
+           └── ACADÉMICO
+                   │
+                   ├── EVALUACIÓN
+                   └── ASISTENCIA
+```
+
+---
+
+# Comunicación Entre Microservicios
+
+El sistema utiliza OpenFeign para permitir la comunicación entre microservicios mediante solicitudes HTTP internas.
+
+Gracias a esto, un microservicio puede consultar información de otro sin necesidad de duplicar datos.
+
+---
+
+# Tecnologías Utilizadas
+
+- Java
+- Spring Boot
+- Spring Data JPA
+- MySQL
+- Maven
+- OpenFeign
+- Lombok
+
+---
+
+# Estructura del Proyecto
+
+```text
+sistemaAcademico-main
+│
+├── ms-usuarios
+├── ms-matricula
+├── ms-academico
+├── ms-evaluacion
+├── ms-asistencia
+└── README.md
+```
+
+---
+
+# Objetivos
+
+- Digitalizar procesos académicos
+- Mejorar la gestión estudiantil
+- Centralizar información
+- Facilitar el control de asistencia y evaluaciones
+- Aplicar arquitectura de microservicios
+
+---
+
+# Mejoras Futuras
+
+- Implementación de JWT
+- API Gateway
+- Docker
+- Kubernetes
+- Panel web administrativo
+- Dashboard académico
+
+---
+
+# Conclusión
+
+S.A.I.E es un sistema académico modular desarrollado con microservicios que permite gestionar información estudiantil de manera organizada, escalable y mantenible.
