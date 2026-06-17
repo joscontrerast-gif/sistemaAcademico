@@ -2,6 +2,7 @@ package com.saie.usuarios.controller;
 
 import com.saie.usuarios.dto.UsuarioRequestDTO;
 import com.saie.usuarios.dto.UsuarioResponseDTO;
+import com.saie.usuarios.security.JwtService;
 import com.saie.usuarios.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +15,21 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UsuarioController {
 
+    @RestController
+    @RequestMapping("/auth")
+    public class AuthController {
+
+        private final JwtService jwtService;
+
+        public AuthController(JwtService jwtService) {
+            this.jwtService = jwtService;
+        }
+
+        @PostMapping("/token")
+        public String generarToken() {
+            return jwtService.generateToken("juan");
+        }
+    }
     private final UsuarioService service;
     //
     @PostMapping
