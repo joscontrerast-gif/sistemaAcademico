@@ -15,6 +15,12 @@ import java.util.List;
 public class UsuarioServiceImpl implements UsuarioService {
 
     private final UsuarioRepository repository;
+
+    @Override
+    public Usuario guardar(Usuario usuario) {
+        return repository.save(usuario);
+    }
+
     //CREAR USUARIO
     @Override
     public UsuarioResponseDTO crearUsuario(UsuarioRequestDTO dto) {

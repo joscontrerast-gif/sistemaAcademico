@@ -1,12 +1,14 @@
 package com.saie.usuarios.controller;
-
 import com.saie.usuarios.dto.UsuarioRequestDTO;
 import com.saie.usuarios.dto.UsuarioResponseDTO;
+import com.saie.usuarios.model.Usuario;
 import com.saie.usuarios.security.JwtService;
 import com.saie.usuarios.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.HttpStatus;
+
 
 import java.util.List;
 
@@ -15,37 +17,32 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UsuarioController {
 
-    @RestController
-    @RequestMapping("/auth")
-    public class AuthController {
+    private final UsuarioService usuarioService;
 
-        private final JwtService jwtService;
-
-        public AuthController(JwtService jwtService) {
-            this.jwtService = jwtService;
-        }
-
-        @PostMapping("/token")
-        public String generarToken() {
-            return jwtService.generateToken("juan");
-        }
-    }
-    private final UsuarioService service;
-    //
+    //TEMPORAL, BORRAR
     @PostMapping
-    public ResponseEntity<UsuarioResponseDTO>
-    crearUsuario(@RequestBody UsuarioRequestDTO dto) {
+    public ResponseEntity<UsuarioResponseDTO> crearUsuario(
+            @RequestBody UsuarioRequestDTO dto) {
 
-        return ResponseEntity.ok(
-                service.crearUsuario(dto));
+        System.out.println("ENTRO AL NUEVO METODO");
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(usuarioService.crearUsuario(dto));
     }
-    //ENDPOINT
+    //TEMPORAL BORRAR
+
+    //USUARIO DEVUELVE MAS QUE EL ID
+    //@PostMapping
+    //public ResponseEntity<UsuarioResponseDTO> crearUsuario(@RequestBody UsuarioRequestDTO dto){
+    //    return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.crearUsuario(dto));
+    //}
+
     @GetMapping
     public ResponseEntity<List<UsuarioResponseDTO>>
     listarUsuarios() {
 
         return ResponseEntity.ok(
-                service.listarUsuarios());
+                usuarioService.listarUsuarios());
     }
 
     @GetMapping("/{id}")
@@ -53,7 +50,7 @@ public class UsuarioController {
     obtenerUsuario(@PathVariable Long id) {
 
         return ResponseEntity.ok(
-                service.obtenerUsuario(id));
+                usuarioService.obtenerUsuario(id));
     }
 
     @PutMapping("/{id}")
@@ -63,14 +60,14 @@ public class UsuarioController {
             @RequestBody UsuarioRequestDTO dto) {
 
         return ResponseEntity.ok(
-                service.actualizarUsuario(id, dto));
+                usuarioService.actualizarUsuario(id, dto));
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void>
     eliminarUsuario(@PathVariable Long id) {
 
-        service.eliminarUsuario(id);
+        usuarioService.eliminarUsuario(id);
 
         return ResponseEntity.noContent().build();
     }
