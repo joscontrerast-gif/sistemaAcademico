@@ -1,19 +1,27 @@
 package com.saie.asistencia.dto;
 
-import lombok.Data;
+import lombok.*;
+
+import java.time.LocalDate;
 
 @Data
 public class AsistenciaRequestDTO {
 
-    private Long usuarioId;
+    private Long alumnoId;
+    private Long cursoId;
+    private String estado;
+    private LocalDate fecha;
 
-    private Long academicoId;
+    @Getter
+    @Setter
+    @NoArgsConstructor
+    @AllArgsConstructor
+    public static class AsistenciaDTO {
 
-    private String estudiante;
-
-    private String asignatura;
-
-    private String fecha;
-
-    private Boolean presente;
+        private Long id;
+        private Long alumnoId;
+        private Long cursoId;
+        private String estado;
+        private LocalDate fecha;
+    }
 }

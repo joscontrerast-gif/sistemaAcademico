@@ -42,7 +42,10 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             return;
         }
 
-        path = request.getRequestURI();
+        if (request.getRequestURI().startsWith("/api/matriculas")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
 
         if (path.startsWith("/api/matriculas")

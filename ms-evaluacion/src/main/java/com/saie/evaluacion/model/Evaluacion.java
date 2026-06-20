@@ -5,6 +5,9 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+
+import jakarta.persistence.PrePersist;
 
 @Entity
 @Table(name = "evaluaciones")
@@ -15,13 +18,14 @@ public class Evaluacion {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @PrePersist
+    public void prePersist() {
+        this.fecha = LocalDateTime.now();
+    }
+
     private String nombre;
-
-    private Long profesorId;
-
+    private Long alumnoId;
     private Long cursoId;
-
-    private LocalDate fecha;
-
+    private LocalDateTime fecha;
     private Double ponderacion;
 }

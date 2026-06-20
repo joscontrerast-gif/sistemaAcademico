@@ -3,104 +3,63 @@ package com.saie.asistencia.service;
 import com.saie.asistencia.client.AcademicoClient;
 import com.saie.asistencia.client.UsuarioClient;
 import com.saie.asistencia.dto.AsistenciaRequestDTO;
-import com.saie.asistencia.dto.AsistenciaResponseDTO;
-import com.saie.asistencia.dto.external.AcademicoDTO;
-import com.saie.asistencia.dto.external.UsuarioDTO;
-import com.saie.asistencia.exception.ResourceNotFoundException;
+
 import com.saie.asistencia.model.Asistencia;
 import com.saie.asistencia.repository.AsistenciaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-@Service
 @RequiredArgsConstructor
+@Service
 public class AsistenciaServiceImpl implements AsistenciaService {
 
-    private final AsistenciaRepository repository;
-    private final UsuarioClient usuarioClient;
-    private final AcademicoClient academicoClient;
+    @Autowired
+    private AsistenciaRepository repository;
+
+    @Autowired
+    private UsuarioClient usuarioClient;
+
+    @Autowired
+    private AcademicoClient academicoClient;
 
     @Override
-    public List<AsistenciaResponseDTO> listar() {
-
+    public List<AsistenciaRequestDTO.AsistenciaDTO> listar() {
         return repository.findAll()
                 .stream()
-                .map(this::convertirDTO)
+                .map(this::toDTO)
                 .toList();
     }
 
     @Override
-    public AsistenciaResponseDTO buscarPorId(Long id) {
+    public AsistenciaRequestDTO.AsistenciaDTO guardar(AsistenciaRequestDTO dto) {
 
-        Asistencia asistencia = repository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Registro no encontrado"));
+        usuarioClient.obtenerUsuario(dto.getAlumnoId());
+        academicoClient.obtenerAcademico(dto.getCursoId());
 
-        return convertirDTO(asistencia);
+        Asistencia a = new Asistencia();
+
+        a.setAlumnoId(dto.getAlumnoId());
+        a.setCursoId(dto.getCursoId());
+        a.setEstado(dto.getEstado());
+        a.setFecha(dto.getFecha());
+
+        return toDTO(repository.save(a));
     }
 
-    @Override
-    public AsistenciaResponseDTO guardar(AsistenciaRequestDTO dto) {
+    private AsistenciaRequestDTO.AsistenciaDTO toDTO(Asistencia a) {
 
-        Asistencia asistencia = new Asistencia();
+        AsistenciaRequestDTO.AsistenciaDTO dto = new AsistenciaRequestDTO.AsistenciaDTO();
 
-        asistencia.setUsuarioId(dto.getUsuarioId());
-        asistencia.setAcademicoId(dto.getAcademicoId());
-        asistencia.setEstudiante(dto.getEstudiante());
-        asistencia.setAsignatura(dto.getAsignatura());
-        asistencia.setFecha(dto.getFecha());
-        asistencia.setPresente(dto.getPresente());
+        dto.setId(a.getId());
+        dto.setAlumnoId(a.getAlumnoId());
+        dto.setCursoId(a.getCursoId());
+        dto.setEstado(a.getEstado());
+        dto.setFecha(a.getFecha());
 
-        return convertirDTO(repository.save(asistencia));
-    }
-
-    @Override
-    public AsistenciaResponseDTO actualizar(Long id, AsistenciaRequestDTO dto) {
-
-        Asistencia asistencia = repository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Registro no encontrado"));
-
-        asistencia.setUsuarioId(dto.getUsuarioId());
-        asistencia.setAcademicoId(dto.getAcademicoId());
-        asistencia.setEstudiante(dto.getEstudiante());
-        asistencia.setAsignatura(dto.getAsignatura());
-        asistencia.setFecha(dto.getFecha());
-        asistencia.setPresente(dto.getPresente());
-
-        return convertirDTO(repository.save(asistencia));
-    }
-
-    @Override
-    public void eliminar(Long id) {
-
-        Asistencia asistencia = repository.findById(id)
-                .orElseThrow(() ->
-                        new ResourceNotFoundException("Registro no encontrado"));
-
-        repository.delete(asistencia);
-    }
-
-    private AsistenciaResponseDTO convertirDTO(Asistencia asistencia) {
-
-        UsuarioDTO usuario =
-                usuarioClient.obtenerUsuario(asistencia.getUsuarioId());
-
-        AcademicoDTO academico =
-                academicoClient.obtenerAcademico(asistencia.getAcademicoId());
-
-        return new AsistenciaResponseDTO(
-                asistencia.getId(),
-                asistencia.getAcademicoId(),
-                asistencia.getUsuarioId(),
-                asistencia.getEstudiante(),
-                asistencia.getAsignatura(),
-                asistencia.getFecha(),
-                asistencia.getPresente(),
-                usuario,
-                academico
-        );
+        return dto;
     }
 }
+

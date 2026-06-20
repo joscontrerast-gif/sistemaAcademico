@@ -16,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Service
@@ -58,7 +59,7 @@ public class EvaluacionServiceImpl
 
         // VALIDAR PROFESOR
         usuarioClient.obtenerUsuario(
-                dto.getProfesorId());
+                dto.getAlumnoId());
 
         // VALIDAR ACADÉMICO
         academicoClient.obtenerAcademico(
@@ -70,14 +71,15 @@ public class EvaluacionServiceImpl
         evaluacion.setNombre(
                 dto.getNombre());
 
-        evaluacion.setProfesorId(
-                dto.getProfesorId());
+        evaluacion.setAlumnoId(dto.getAlumnoId());
 
         evaluacion.setCursoId(
                 dto.getCursoId());
 
         evaluacion.setPonderacion(
                 dto.getPonderacion());
+
+        evaluacion.setFecha(LocalDateTime.now());
 
         Evaluacion guardada =
                 repository.save(evaluacion);
@@ -96,9 +98,7 @@ public class EvaluacionServiceImpl
                                 new ResourceNotFoundException(
                                         "Evaluación no encontrada"));
 
-        // VALIDAR PROFESOR
-        usuarioClient.obtenerUsuario(
-                dto.getProfesorId());
+
 
         // VALIDAR ACADÉMICO
         academicoClient.obtenerAcademico(
@@ -107,8 +107,7 @@ public class EvaluacionServiceImpl
         evaluacion.setNombre(
                 dto.getNombre());
 
-        evaluacion.setProfesorId(
-                dto.getProfesorId());
+        evaluacion.setAlumnoId(dto.getAlumnoId());
 
         evaluacion.setCursoId(
                 dto.getCursoId());
@@ -118,6 +117,8 @@ public class EvaluacionServiceImpl
 
         Evaluacion actualizada =
                 repository.save(evaluacion);
+
+
 
         return convertirDTO(actualizada);
     }
@@ -133,28 +134,20 @@ public class EvaluacionServiceImpl
 
         repository.delete(evaluacion);
     }
+    private EvaluacionDTO convertirDTO(Evaluacion evaluacion) {
 
-    private EvaluacionDTO convertirDTO(
-            Evaluacion evaluacion) {
+        EvaluacionDTO dto = new EvaluacionDTO();
 
-        EvaluacionDTO dto =
-                new EvaluacionDTO();
+        dto.setId(evaluacion.getId());
+        dto.setNombre(evaluacion.getNombre());
 
-        dto.setId(
-                evaluacion.getId());
+        dto.setAlumnoId(evaluacion.getAlumnoId());
+        dto.setCursoId(evaluacion.getCursoId());
 
-        dto.setNombre(
-                evaluacion.getNombre());
-
-        dto.setCursoId(
-                evaluacion.getProfesorId());
-
-        dto.setCursoId(
-                evaluacion.getCursoId());
-
-        dto.setPonderacion(
-                evaluacion.getPonderacion());
+        dto.setPonderacion(evaluacion.getPonderacion());
+        dto.setFecha(LocalDateTime.now());
 
         return dto;
     }
+
 }

@@ -9,11 +9,13 @@ public class EvaluacionRequestDTO {
 
     private String nombre;
 
-    private Long profesorId;
+    private Long alumnoId;
 
     private Long cursoId;
 
     private LocalDate fecha;
 
     private Double ponderacion;
+
+
 }

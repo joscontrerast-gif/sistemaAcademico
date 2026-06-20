@@ -10,6 +10,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "asistencias")
 @Getter
@@ -22,15 +25,10 @@ public class Asistencia {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long usuarioId;
+    private Long alumnoId;
+    private Long cursoId;
 
-    private Long academicoId;
+    private String estado; // PRESENTE / AUSENTE
 
-    private String estudiante;
-
-    private String asignatura;
-
-    private String fecha;
-
-    private Boolean presente;
+    private LocalDate fecha;
 }

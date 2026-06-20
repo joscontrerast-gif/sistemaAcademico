@@ -1,47 +1,30 @@
 package com.saie.asistencia.controller;
 
 import com.saie.asistencia.dto.AsistenciaRequestDTO;
-import com.saie.asistencia.dto.AsistenciaResponseDTO;
+
 import com.saie.asistencia.service.AsistenciaService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
+@RequiredArgsConstructor
 @RestController
 @RequestMapping("/api/asistencias")
-@RequiredArgsConstructor
 public class AsistenciaController {
 
-    private final AsistenciaService service;
+    @Autowired
+    private AsistenciaService service;
 
     @GetMapping
-    public List<AsistenciaResponseDTO> listar() {
+    public List<AsistenciaRequestDTO.AsistenciaDTO> listar() {
         return service.listar();
     }
 
-    @GetMapping("/{id}")
-    public AsistenciaResponseDTO buscar(@PathVariable Long id) {
-        return service.buscarPorId(id);
-    }
-
     @PostMapping
-    @ResponseStatus(HttpStatus.CREATED)
-    public AsistenciaResponseDTO guardar(@RequestBody AsistenciaRequestDTO dto) {
-        return service.guardar(dto);
-    }
+    public ResponseEntity<AsistenciaRequestDTO.AsistenciaDTO> guardar(@RequestBody AsistenciaRequestDTO dto) {
 
-    @PutMapping("/{id}")
-    public AsistenciaResponseDTO actualizar(@PathVariable Long id,
-                                            @RequestBody AsistenciaRequestDTO dto) {
-
-        return service.actualizar(id, dto);
-    }
-
-    @DeleteMapping("/{id}")
-    @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void eliminar(@PathVariable Long id) {
-        service.eliminar(id);
+        return ResponseEntity.ok(service.guardar(dto));
     }
 }

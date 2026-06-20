@@ -3,6 +3,7 @@ package com.saie.evaluacion.dto;
 import lombok.Data;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 @Data
 public class EvaluacionDTO {
@@ -11,11 +12,11 @@ public class EvaluacionDTO {
 
     private String nombre;
 
-    private Long profesorId;
+    private Long alumnoId;
 
     private Long cursoId;
 
-    private LocalDate fecha;
+    private LocalDateTime fecha;
 
     private Double ponderacion;
 }
