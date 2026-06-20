@@ -1,4 +1,4 @@
-package com.saie.matricula.dto.external;
+package com.saie.matricula.dto;
 
 public class AcademicoDTO {
 
@@ -7,6 +7,9 @@ public class AcademicoDTO {
     private String carrera;
     private String asignatura;
     private Double promedio;
+
+    public AcademicoDTO() {
+    }
 
     public Long getId() {
         return id;

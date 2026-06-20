@@ -1,14 +1,14 @@
 package com.saie.usuarios.controller;
+
+import com.saie.usuarios.dto.UsuarioDTO;
 import com.saie.usuarios.dto.UsuarioRequestDTO;
-import com.saie.usuarios.dto.UsuarioResponseDTO;
-import com.saie.usuarios.model.Usuario;
-import com.saie.usuarios.security.JwtService;
+
 import com.saie.usuarios.service.UsuarioService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.http.HttpStatus;
-
 
 import java.util.List;
 
@@ -17,58 +17,39 @@ import java.util.List;
 @RequiredArgsConstructor
 public class UsuarioController {
 
-    private final UsuarioService usuarioService;
-
-    //TEMPORAL, BORRAR
-    @PostMapping
-    public ResponseEntity<UsuarioResponseDTO> crearUsuario(
-            @RequestBody UsuarioRequestDTO dto) {
-
-        System.out.println("ENTRO AL NUEVO METODO");
-
-        return ResponseEntity.status(HttpStatus.CREATED)
-                .body(usuarioService.crearUsuario(dto));
-    }
-    //TEMPORAL BORRAR
-
-    //USUARIO DEVUELVE MAS QUE EL ID
-    //@PostMapping
-    //public ResponseEntity<UsuarioResponseDTO> crearUsuario(@RequestBody UsuarioRequestDTO dto){
-    //    return ResponseEntity.status(HttpStatus.CREATED).body(usuarioService.crearUsuario(dto));
-    //}
+    @Autowired
+    private UsuarioService service;
 
     @GetMapping
-    public ResponseEntity<List<UsuarioResponseDTO>>
-    listarUsuarios() {
-
-        return ResponseEntity.ok(
-                usuarioService.listarUsuarios());
+    public ResponseEntity<List<UsuarioDTO>> listar() {
+        return ResponseEntity.ok(service.listar());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDTO>
-    obtenerUsuario(@PathVariable Long id) {
+    public ResponseEntity<UsuarioDTO> obtener(@PathVariable Long id) {
+        return ResponseEntity.ok(service.obtener(id));
+    }
 
-        return ResponseEntity.ok(
-                usuarioService.obtenerUsuario(id));
+    @PostMapping
+    public ResponseEntity<UsuarioDTO> guardar(
+            @RequestBody UsuarioRequestDTO dto) {
+
+        return ResponseEntity
+                .status(HttpStatus.CREATED)
+                .body(service.guardar(dto));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UsuarioResponseDTO>
-    actualizarUsuario(
+    public ResponseEntity<UsuarioDTO> actualizar(
             @PathVariable Long id,
             @RequestBody UsuarioRequestDTO dto) {
 
-        return ResponseEntity.ok(
-                usuarioService.actualizarUsuario(id, dto));
+        return ResponseEntity.ok(service.actualizar(id, dto));
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void>
-    eliminarUsuario(@PathVariable Long id) {
-
-        usuarioService.eliminarUsuario(id);
-
+    public ResponseEntity<Void> eliminar(@PathVariable Long id) {
+        service.eliminarUsuario(id);
         return ResponseEntity.noContent().build();
     }
 }

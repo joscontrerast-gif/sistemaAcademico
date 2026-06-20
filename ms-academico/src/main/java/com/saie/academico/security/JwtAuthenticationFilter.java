@@ -32,19 +32,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             FilterChain filterChain)
             throws ServletException, IOException {
 
-        String authHeader =
-                request.getHeader("Authorization");
+        String path = request.getRequestURI();
 
-        if (authHeader != null &&
-                authHeader.startsWith("Bearer ")) {
+        // 🚨 BYPASS para pruebas
+        if (path.startsWith("/api/matriculas")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-            String token =
-                    authHeader.substring(7);
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+
+            String token = authHeader.substring(7);
 
             if (jwtService.validateToken(token)) {
 
-                String username =
-                        jwtService.extractUsername(token);
+                String username = jwtService.extractUsername(token);
 
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(
@@ -52,11 +56,6 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                 null,
                                 AuthorityUtils.NO_AUTHORITIES
                         );
-
-                auth.setDetails(
-                        new WebAuthenticationDetailsSource()
-                                .buildDetails(request)
-                );
 
                 SecurityContextHolder.getContext()
                         .setAuthentication(auth);

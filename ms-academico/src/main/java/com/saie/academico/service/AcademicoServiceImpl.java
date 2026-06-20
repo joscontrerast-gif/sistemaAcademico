@@ -2,7 +2,8 @@ package com.saie.academico.service;
 
 import com.saie.academico.dto.AcademicoDTO;
 import com.saie.academico.dto.AcademicoRequestDTO;
-
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.http.HttpStatus;
 import com.saie.academico.dto.AcademicoResponseDTO;
 import com.saie.academico.model.Academico;
 
@@ -33,11 +34,12 @@ public class AcademicoServiceImpl
     @Override
     public AcademicoDTO obtener(Long id) {
 
-        Academico academico =
-                repository.findById(id)
-                        .orElseThrow(() ->
-                                new RuntimeException(
-                                        "Académico no encontrado"));
+        Academico academico = repository.findById(id)
+                .orElseThrow(() ->
+                        new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "Académico no encontrado"
+                        ));
 
         return convertirDTO(academico);
     }
@@ -104,7 +106,19 @@ public class AcademicoServiceImpl
 
     @Override
     public AcademicoResponseDTO buscarPorId(Long id) {
-        return null;
+
+        Academico academico = repository.findById(id)
+                .orElseThrow(() ->
+                        new RuntimeException(
+                                "Académico no encontrado"));
+
+        return new AcademicoResponseDTO(
+                academico.getId(),
+                academico.getNombre(),
+                academico.getCarrera(),
+                academico.getAsignatura(),
+                academico.getPromedio()
+        );
     }
 
     private AcademicoDTO convertirDTO(

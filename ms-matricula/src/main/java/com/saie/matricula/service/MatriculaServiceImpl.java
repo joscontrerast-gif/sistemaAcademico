@@ -1,153 +1,126 @@
 package com.saie.matricula.service;
 
-import com.saie.matricula.client.UsuarioClient;
-import com.saie.matricula.client.CursoClient;
 import com.saie.matricula.dto.MatriculaDTO;
 import com.saie.matricula.dto.MatriculaRequestDTO;
-import com.saie.matricula.exception.ResourceNotFoundException;
 import com.saie.matricula.model.Matricula;
 import com.saie.matricula.repository.MatriculaRepository;
+import com.saie.matricula.client.UsuarioClient;
+import com.saie.matricula.client.AcademicoClient;
 
+import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class MatriculaServiceImpl
-        implements MatriculaService {
+public class MatriculaServiceImpl implements MatriculaService {
 
     @Autowired
     private MatriculaRepository repository;
 
     @Autowired
-    private UsuarioClient usuarioClient;
+    private UsuarioClient usuarioClient; // ms-usuarios
 
     @Autowired
-    private CursoClient cursoClient;
+    private AcademicoClient academicoClient; // ms-academico
 
+    //LISTAR TODAS
     @Override
     public List<MatriculaDTO> listar() {
-
         return repository.findAll()
                 .stream()
-                .map(this::convertirDTO)
-                .toList();
+                .map(this::toDTO)
+                .collect(Collectors.toList());
     }
 
+    // OBTENER POR ID
     @Override
     public MatriculaDTO obtener(Long id) {
+        Matricula m = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Matrícula no encontrada"));
 
-        Matricula matricula =
-                repository.findById(id)
-                        .orElseThrow(() ->
-                                new ResourceNotFoundException(
-                                        "Matrícula no encontrada"));
-
-        return convertirDTO(matricula);
+        return toDTO(m);
     }
+
+    //CREAR MATRÍCULA
+
 
     @Override
-    public MatriculaDTO guardar(
-            MatriculaRequestDTO dto) {
+    public MatriculaDTO guardar(MatriculaRequestDTO dto) {
 
-        // VALIDAR ESTUDIANTE
-        usuarioClient.obtenerUsuario(
-                dto.getEstudianteId());
+        try {
+            usuarioClient.getUsuarioById(dto.getEstudianteId());
+        } catch (FeignException e) {
+            throw new RuntimeException("Usuario no existe con id: " + dto.getEstudianteId());
+        }
 
-        // VALIDAR CURSO
-        cursoClient.obtenerCurso(
-                dto.getCursoId());
+        try {
+            academicoClient.getAcademicoById(dto.getCursoId());
+        } catch (FeignException e) {
+            throw new RuntimeException("Académico no existe con id: " + dto.getCursoId());
+        }
 
-        Matricula matricula =
-                new Matricula();
+        Matricula m = new Matricula();
+        m.setEstudianteId(dto.getEstudianteId());
+        m.setCursoId(dto.getCursoId());
+        m.setFechaMatricula(LocalDate.now());
+        m.setEstado("ACTIVA");
 
-        matricula.setEstudianteId(
-                dto.getEstudianteId());
-
-        matricula.setCursoId(
-                dto.getCursoId());
-
-        matricula.setEstado(
-                dto.getEstado());
-
-        matricula.setFechaMatricula(
-                LocalDate.now());
-
-        Matricula guardada =
-                repository.save(matricula);
-
-        return convertirDTO(guardada);
+        return toDTO(repository.save(m));
     }
-
+    // ACTUALIZAR
     @Override
-    public MatriculaDTO actualizar(
-            Long id,
-            MatriculaRequestDTO dto) {
+    public MatriculaDTO actualizar(Long id, MatriculaRequestDTO dto) {
 
-        Matricula matricula =
-                repository.findById(id)
-                        .orElseThrow(() ->
-                                new ResourceNotFoundException(
-                                        "Matrícula no encontrada"));
+        Matricula m = repository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Matrícula no encontrada"));
 
-        // VALIDAR ESTUDIANTE
-        usuarioClient.obtenerUsuario(
-                dto.getEstudianteId());
+        // validar existencia
+        usuarioClient.getUsuarioById(dto.getEstudianteId());
+        academicoClient.getAcademicoById(dto.getCursoId());
 
-        // VALIDAR CURSO
-        cursoClient.obtenerCurso(
-                dto.getCursoId());
+        m.setEstudianteId(dto.getEstudianteId());
+        m.setCursoId(dto.getCursoId());
+        m.setEstado(dto.getEstado());
 
-        matricula.setEstudianteId(
-                dto.getEstudianteId());
-
-        matricula.setCursoId(
-                dto.getCursoId());
-
-        matricula.setEstado(
-                dto.getEstado());
-
-        Matricula actualizada =
-                repository.save(matricula);
-
-        return convertirDTO(actualizada);
+        return toDTO(repository.save(m));
     }
 
+    //ELIMINAR
     @Override
     public void eliminar(Long id) {
-
-        Matricula matricula =
-                repository.findById(id)
-                        .orElseThrow(() ->
-                                new ResourceNotFoundException(
-                                        "Matrícula no encontrada"));
-
-        repository.delete(matricula);
+        repository.deleteById(id);
     }
 
-    private MatriculaDTO convertirDTO(
-            Matricula matricula) {
+    // FILTRAR POR ESTUDIANTE
+    @Override
+    public List<MatriculaDTO> buscarPorEstudiante(Long id) {
+        return repository.findByEstudianteId(id)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
 
-        MatriculaDTO dto =
-                new MatriculaDTO();
+    //FILTRAR POR CURSO
+    @Override
+    public List<MatriculaDTO> buscarPorCurso(Long id) {
+        return repository.findByCursoId(id)
+                .stream()
+                .map(this::toDTO)
+                .collect(Collectors.toList());
+    }
 
-        dto.setId(
-                matricula.getId());
-
-        dto.setEstudianteId(
-                matricula.getEstudianteId());
-
-        dto.setCursoId(
-                matricula.getCursoId());
-
-        dto.setFechaMatricula(
-                matricula.getFechaMatricula());
-
-        dto.setEstado(
-                matricula.getEstado());
-
+    // MAPPER
+    private MatriculaDTO toDTO(Matricula m) {
+        MatriculaDTO dto = new MatriculaDTO();
+        dto.setId(m.getId());
+        dto.setEstudianteId(m.getEstudianteId());
+        dto.setCursoId(m.getCursoId());
+        dto.setFechaMatricula(m.getFechaMatricula());
+        dto.setEstado(m.getEstado());
         return dto;
     }
 }

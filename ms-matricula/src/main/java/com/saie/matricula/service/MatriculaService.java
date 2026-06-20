@@ -10,12 +10,13 @@ public interface MatriculaService {
 
     MatriculaDTO obtener(Long id);
 
-    MatriculaDTO guardar(
-            MatriculaRequestDTO dto);
+    MatriculaDTO guardar(MatriculaRequestDTO dto);
 
-    MatriculaDTO actualizar(
-            Long id,
-            MatriculaRequestDTO dto);
+    MatriculaDTO actualizar(Long id, MatriculaRequestDTO dto);
 
     void eliminar(Long id);
+
+    List<MatriculaDTO> buscarPorEstudiante(Long id);
+
+    List<MatriculaDTO> buscarPorCurso(Long id); // 🔥 ESTE TE FALTA
 }

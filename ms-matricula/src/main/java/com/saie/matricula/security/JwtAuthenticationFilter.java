@@ -31,20 +31,40 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             HttpServletResponse response,
             FilterChain filterChain)
             throws ServletException, IOException {
+        String path = request.getServletPath();
 
-        String authHeader =
-                request.getHeader("Authorization");
+        if (path.startsWith("/auth")
+                || path.startsWith("/api/matriculas")
+                || path.startsWith("/api/academicos")
+                || path.startsWith("/api/usuarios")) {
 
-        if (authHeader != null &&
-                authHeader.startsWith("Bearer ")) {
+            filterChain.doFilter(request, response);
+            return;
+        }
 
-            String token =
-                    authHeader.substring(7);
+        path = request.getRequestURI();
+
+
+        if (path.startsWith("/api/matriculas")
+                || path.startsWith("/api/usuarios")
+                || path.startsWith("/api/academicos")
+                || path.startsWith("/auth")
+                || path.startsWith("/swagger-ui")
+                || path.startsWith("/v3/api-docs")) {
+
+            filterChain.doFilter(request, response);
+            return;
+        }
+
+        String authHeader = request.getHeader("Authorization");
+
+        if (authHeader != null && authHeader.startsWith("Bearer ")) {
+
+            String token = authHeader.substring(7);
 
             if (jwtService.validateToken(token)) {
 
-                String username =
-                        jwtService.extractUsername(token);
+                String username = jwtService.extractUsername(token);
 
                 UsernamePasswordAuthenticationToken auth =
                         new UsernamePasswordAuthenticationToken(
@@ -53,13 +73,7 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
                                 AuthorityUtils.NO_AUTHORITIES
                         );
 
-                auth.setDetails(
-                        new WebAuthenticationDetailsSource()
-                                .buildDetails(request)
-                );
-
-                SecurityContextHolder.getContext()
-                        .setAuthentication(auth);
+                SecurityContextHolder.getContext().setAuthentication(auth);
             }
         }
 

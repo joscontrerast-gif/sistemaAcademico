@@ -44,6 +44,10 @@ public class AcademicoController {
     @PostMapping
     public ResponseEntity<AcademicoDTO> guardar(
             @RequestBody AcademicoRequestDTO dto) {
+        System.out.println("Nombre: " + dto.getNombre());
+        System.out.println("Carrera: " + dto.getCarrera());
+        System.out.println("Asignatura: " + dto.getAsignatura());
+        System.out.println("Promedio: " + dto.getPromedio());
 
         return ResponseEntity.status(
                         HttpStatus.CREATED)
@@ -71,13 +75,3 @@ public class AcademicoController {
 }
 
 
-//Enpoint Protegido
-@RestController
-@RequestMapping("/api")
-class TestController {
-
-    @GetMapping("/test")
-    public String test() {
-        return "Acceso permitido";
-    }
-}
