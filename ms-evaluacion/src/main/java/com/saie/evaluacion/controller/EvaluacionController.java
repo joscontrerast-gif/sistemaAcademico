@@ -10,8 +10,14 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+
+
 import java.util.List;
 
+@Tag(name = "Evaluaciones", description = "Gestión de evaluaciones")
 @RestController
 @RequestMapping("/api/evaluaciones")
 public class EvaluacionController {
@@ -19,11 +25,15 @@ public class EvaluacionController {
     @Autowired
     private EvaluacionService service;
 
+    @Operation(summary = "Listar evaluaciones")
+
     @GetMapping
     public List<EvaluacionDTO> listar() {
 
         return service.listar();
     }
+
+    @Operation(summary = "Obtener evaluación por ID")
 
     @GetMapping("/{id}")
     public EvaluacionDTO obtener(
@@ -31,6 +41,8 @@ public class EvaluacionController {
 
         return service.obtener(id);
     }
+
+    @Operation(summary = "Crear evaluación")
 
     @PostMapping
     public EvaluacionDTO guardar(
@@ -40,6 +52,8 @@ public class EvaluacionController {
         return service.guardar(dto);
     }
 
+    @Operation(summary = "Actualizar evaluación")
+
     @PutMapping("/{id}")
     public EvaluacionDTO actualizar(
             @PathVariable Long id,
@@ -48,6 +62,8 @@ public class EvaluacionController {
 
         return service.actualizar(id, dto);
     }
+
+    @Operation(summary = "Eliminar evaluación")
 
     @DeleteMapping("/{id}")
     public void eliminar(

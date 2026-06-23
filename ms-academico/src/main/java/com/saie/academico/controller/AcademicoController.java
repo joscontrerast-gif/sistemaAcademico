@@ -19,12 +19,18 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
+
+@Tag(name = "Académicos", description = "Gestión académica")
 @RestController
 @RequestMapping("/api/academicos")
 public class AcademicoController {
 
     @Autowired
     private AcademicoService service;
+
+    @Operation(summary = "Listar académicos")
 
     @GetMapping
     public ResponseEntity<List<AcademicoDTO>> listar() {
@@ -33,6 +39,8 @@ public class AcademicoController {
                 service.listar());
     }
 
+    @Operation(summary = "Obtener académico por ID")
+
     @GetMapping("/{id}")
     public ResponseEntity<AcademicoDTO> obtener(
             @PathVariable Long id) {
@@ -40,6 +48,8 @@ public class AcademicoController {
         return ResponseEntity.ok(
                 service.obtener(id));
     }
+
+    @Operation(summary = "Crear académico")
 
     @PostMapping
     public ResponseEntity<AcademicoDTO> guardar(
@@ -54,6 +64,8 @@ public class AcademicoController {
                 .body(service.guardar(dto));
     }
 
+    @Operation(summary = "Actualizar académico")
+
     @PutMapping("/{id}")
     public ResponseEntity<AcademicoDTO> actualizar(
             @PathVariable Long id,
@@ -62,6 +74,8 @@ public class AcademicoController {
         return ResponseEntity.ok(
                 service.actualizar(id, dto));
     }
+
+    @Operation(summary = "Eliminar académico")
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> eliminar(
