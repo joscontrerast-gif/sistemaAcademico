@@ -10,7 +10,7 @@ FLOW DE DATOS:
                     MATRICULA
                           │
                           ▼
-                     ACADEMICO (CURSO/PROFESOR)
+                     ACADEMICO (CURSO)
                           │
           ┌───────────────┼───────────────┐
           ▼               ▼               ▼
