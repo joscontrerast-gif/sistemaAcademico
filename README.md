@@ -213,6 +213,11 @@ Gracias a esto, un microservicio puede consultar información de otro sin necesi
 - Maven
 - OpenFeign
 - Lombok
+- JWT
+- JUNIT5
+- API Gateway
+- YAML
+- Docker
 
 ---
 
@@ -243,9 +248,6 @@ sistemaAcademico-main
 
 # Mejoras Futuras
 
-- Implementación de JWT
-- API Gateway
-- Docker
 - Kubernetes
 - Panel web administrativo
 - Dashboard académico
