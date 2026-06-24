@@ -6,61 +6,38 @@ import io.jsonwebtoken.security.Keys;
 import org.springframework.stereotype.Service;
 
 import javax.crypto.SecretKey;
-import java.nio.charset.StandardCharsets;
-import java.util.Date;
+import java.security.Key;
 
 @Service
 public class JwtService {
 
-    private static final String SECRET =
-            "MiClaveSuperSecretaMatriculaJWT2026Segura123";
+    private static final String SECRET = "12345678901234567890123456789012";
 
-    private final SecretKey key =
-            Keys.hmacShaKeyFor(
-                    SECRET.getBytes(StandardCharsets.UTF_8)
-            );
-
-    private static final long EXPIRATION =
-            24 * 60 * 60 * 1000;
-
-    public String generateToken(String username) {
-
-        return Jwts.builder()
-                .subject(username)
-                .issuer("matricula")
-                .issuedAt(new Date())
-                .expiration(
-                        new Date(System.currentTimeMillis() + EXPIRATION)
-                )
-                .signWith(key)
-                .compact();
+    private Key getSigningKey() {
+        return Keys.hmacShaKeyFor(SECRET.getBytes());
     }
 
+    // Extrae username del token
     public String extractUsername(String token) {
+        return extractAllClaims(token).getSubject();
+    }
 
-        Claims claims = Jwts.parser()
-                .verifyWith(key)
+    // Valida token
+    public boolean isTokenValid(String token) {
+        try {
+            extractAllClaims(token);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    // parse central
+    private Claims extractAllClaims(String token) {
+        return Jwts.parser()
+                .verifyWith((SecretKey) getSigningKey())
                 .build()
                 .parseSignedClaims(token)
                 .getPayload();
-
-        return claims.getSubject();
-    }
-
-    public boolean validateToken(String token) {
-
-        try {
-
-            Jwts.parser()
-                    .verifyWith(key)
-                    .build()
-                    .parseSignedClaims(token);
-
-            return true;
-
-        } catch (Exception e) {
-
-            return false;
-        }
     }
 }
