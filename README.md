@@ -218,6 +218,8 @@ Gracias a esto, un microservicio puede consultar información de otro sin necesi
 - API Gateway
 - YAML
 - Docker
+- Swagger
+- DataFaker
 
 ---
 
