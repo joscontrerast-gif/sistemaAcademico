@@ -1,0 +1,40 @@
+server:
+  port: 8080
+
+spring:
+  application:
+    name: api-gateway
+
+  cloud:
+    gateway:
+      routes:
+
+        - id: ms-usuarios
+          uri: lb://MS-USUARIOS
+          predicates:
+            - Path=/api/usuarios/**
+
+        - id: ms-academico
+          uri: lb://MS-ACADEMICO
+          predicates:
+            - Path=/api/academicos/**
+
+        - id: ms-matricula
+          uri: lb://MS-MATRICULA
+          predicates:
+            - Path=/api/matriculas/**
+
+        - id: ms-asistencia
+          uri: lb://MS-ASISTENCIA
+          predicates:
+            - Path=/api/asistencias/**
+
+        - id: ms-evaluaciones
+          uri: lb://MS-EVALUACIONES
+          predicates:
+            - Path=/api/evaluaciones/**
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/

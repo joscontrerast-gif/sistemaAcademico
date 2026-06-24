@@ -1,6 +1,9 @@
+server:
+  port: 8082
+
 spring:
   application:
-    name: ms-academico   # 👈 CLAVE PARA EUREKA
+    name: ms-academico
 
   datasource:
     url: jdbc:mysql://localhost:3306/academico_db
@@ -9,7 +12,7 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: validate
+      ddl-auto: update
     show-sql: true
 
   flyway:
@@ -20,8 +23,6 @@ eureka:
   client:
     service-url:
       defaultZone: http://localhost:8761/eureka/
-    register-with-eureka: true
-    fetch-registry: true
 
-server:
-  port: 8082
+  instance:
+    prefer-ip-address: true
