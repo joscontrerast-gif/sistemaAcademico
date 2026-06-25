@@ -3,16 +3,25 @@ services:
   mysql-saie:
     image: mysql:8
     container_name: mysql-saie
+    restart: unless-stopped
     environment:
       MYSQL_ROOT_PASSWORD: root
     ports:
       - "3306:3306"
+    volumes:
+      - ./mysql-init:/docker-entrypoint-initdb.d
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
     networks:
       - saie-network
 
   eureka-server:
     build: ./eureka-server
     container_name: eureka-server
+    restart: unless-stopped
     ports:
       - "8761:8761"
     networks:
@@ -21,6 +30,7 @@ services:
   api-gateway:
     build: ./api-gateway
     container_name: api-gateway
+    restart: unless-stopped
     ports:
       - "8080:8080"
     environment:
@@ -33,6 +43,7 @@ services:
   ms-usuarios:
     build: ./ms-usuarios
     container_name: ms-usuarios
+    restart: unless-stopped
     ports:
       - "8081:8081"
     environment:
@@ -47,6 +58,7 @@ services:
   ms-academico:
     build: ./ms-academico
     container_name: ms-academico
+    restart: unless-stopped
     ports:
       - "8082:8082"
     environment:
@@ -61,6 +73,7 @@ services:
   ms-matricula:
     build: ./ms-matricula
     container_name: ms-matricula
+    restart: unless-stopped
     ports:
       - "8083:8083"
     environment:
@@ -75,6 +88,7 @@ services:
   ms-evaluacion:
     build: ./ms-evaluacion
     container_name: ms-evaluacion
+    restart: unless-stopped
     ports:
       - "8084:8084"
     environment:
@@ -89,6 +103,7 @@ services:
   ms-asistencia:
     build: ./ms-asistencia
     container_name: ms-asistencia
+    restart: unless-stopped
     ports:
       - "8085:8085"
     environment:
