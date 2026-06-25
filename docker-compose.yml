@@ -1,0 +1,105 @@
+services:
+
+  mysql-saie:
+    image: mysql:8
+    container_name: mysql-saie
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    ports:
+      - "3306:3306"
+    networks:
+      - saie-network
+
+  eureka-server:
+    build: ./eureka-server
+    container_name: eureka-server
+    ports:
+      - "8761:8761"
+    networks:
+      - saie-network
+
+  api-gateway:
+    build: ./api-gateway
+    container_name: api-gateway
+    ports:
+      - "8080:8080"
+    environment:
+      EUREKA_HOST: eureka-server
+    depends_on:
+      - eureka-server
+    networks:
+      - saie-network
+
+  ms-usuarios:
+    build: ./ms-usuarios
+    container_name: ms-usuarios
+    ports:
+      - "8081:8081"
+    environment:
+      DB_HOST: mysql-saie
+      EUREKA_HOST: eureka-server
+    depends_on:
+      - mysql-saie
+      - eureka-server
+    networks:
+      - saie-network
+
+  ms-academico:
+    build: ./ms-academico
+    container_name: ms-academico
+    ports:
+      - "8082:8082"
+    environment:
+      DB_HOST: mysql-saie
+      EUREKA_HOST: eureka-server
+    depends_on:
+      - mysql-saie
+      - eureka-server
+    networks:
+      - saie-network
+
+  ms-matricula:
+    build: ./ms-matricula
+    container_name: ms-matricula
+    ports:
+      - "8083:8083"
+    environment:
+      DB_HOST: mysql-saie
+      EUREKA_HOST: eureka-server
+    depends_on:
+      - mysql-saie
+      - eureka-server
+    networks:
+      - saie-network
+
+  ms-evaluacion:
+    build: ./ms-evaluacion
+    container_name: ms-evaluacion
+    ports:
+      - "8084:8084"
+    environment:
+      DB_HOST: mysql-saie
+      EUREKA_HOST: eureka-server
+    depends_on:
+      - mysql-saie
+      - eureka-server
+    networks:
+      - saie-network
+
+  ms-asistencia:
+    build: ./ms-asistencia
+    container_name: ms-asistencia
+    ports:
+      - "8085:8085"
+    environment:
+      DB_HOST: mysql-saie
+      EUREKA_HOST: eureka-server
+    depends_on:
+      - mysql-saie
+      - eureka-server
+    networks:
+      - saie-network
+
+networks:
+  saie-network:
+    driver: bridge
