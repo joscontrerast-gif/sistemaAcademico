@@ -308,51 +308,9 @@ git clone https://github.com/joscontrerast-gif/sistemaAcademico.git
 cd sistemaAcademico
 ```
 
----
-## 2.-Generación de artefactos Maven
-
-Antes de construir las imágenes Docker, es necesario generar los archivos `.jar` de cada microservicio utilizando el Maven Wrapper incluido en el proyecto.
-
-
-```bash
-cd eureka-server
-./mvnw clean package
-```
-
-```bash
-cd ../api-gateway
-./mvnw clean package
-```
-
-```bash
-cd ../ms-usuarios
-./mvnw clean package
-```
-
-```bash
-cd ../ms-academico
-./mvnw clean package
-```
-
-```bash
-cd ../ms-matricula
-./mvnw clean package
-```
-
-```bash
-cd ../ms-evaluacion
-./mvnw clean package
-```
-
-```bash
-cd ../ms-asistencia
-./mvnw clean package
-```
-
-> **Importante:** Los directorios `target/` y los archivos `.jar` no se almacenan en el repositorio Git. Por este motivo, es obligatorio generar los artefactos Maven antes de ejecutar Docker Compose por primera vez.
 
 ---
-## 3. Construir y levantar los contenedores
+## 2. Construir y levantar los contenedores
 
 ```bash
 docker compose up -d --build
@@ -360,7 +318,7 @@ docker compose up -d --build
 
 ---
 
-## 4. Verificar contenedores
+## 3. Verificar contenedores
 
 ```bash
 docker ps
