@@ -348,6 +348,9 @@ cd ../ms-evaluacion
 cd ../ms-asistencia
 ./mvnw clean package
 ```
+
+> **Importante:** Los directorios `target/` y los archivos `.jar` no se almacenan en el repositorio Git. Por este motivo, es obligatorio generar los artefactos Maven antes de ejecutar Docker Compose por primera vez.
+
 ---
 ## 3. Construir y levantar los contenedores
 
