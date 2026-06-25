@@ -309,8 +309,47 @@ cd sistemaAcademico
 ```
 
 ---
+## 2.-Generación de artefactos Maven
 
-## 2. Construir y levantar los contenedores
+Antes de construir las imágenes Docker, es necesario generar los archivos `.jar` de cada microservicio utilizando el Maven Wrapper incluido en el proyecto.
+
+
+```bash
+cd eureka-server
+./mvnw clean package
+```
+
+```bash
+cd ../api-gateway
+./mvnw clean package
+```
+
+```bash
+cd ../ms-usuarios
+./mvnw clean package
+```
+
+```bash
+cd ../ms-academico
+./mvnw clean package
+```
+
+```bash
+cd ../ms-matricula
+./mvnw clean package
+```
+
+```bash
+cd ../ms-evaluacion
+./mvnw clean package
+```
+
+```bash
+cd ../ms-asistencia
+./mvnw clean package
+```
+---
+## 3. Construir y levantar los contenedores
 
 ```bash
 docker compose up -d --build
@@ -318,7 +357,7 @@ docker compose up -d --build
 
 ---
 
-## 3. Verificar contenedores
+## 4. Verificar contenedores
 
 ```bash
 docker ps
