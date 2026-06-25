@@ -379,13 +379,13 @@ Las pruebas unitarias fueron desarrolladas utilizando JUnit 5.
 Ejecutar pruebas:
 
 ```bash
-mvn test
+./mvnw test
 ```
 
 Generar artefactos:
 
 ```bash
-mvn clean package
+./mvnw clean package
 ```
 
 ---
